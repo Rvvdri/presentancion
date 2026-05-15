@@ -1094,63 +1094,168 @@ body::after {
       desc: 'Los arcades dominaron esta era: máquinas dedicadas en bares y centros comerciales. Luego el Atari 2600 (1977) llevó esos juegos al hogar por primera vez. Con apenas 128 bytes de RAM, cada instrucción era oro. La pantalla era una cuadrícula de píxeles y el sonido, un beep.',
       fact: '⬛ FUN FACT: El Atari 2600 tenía 128 bytes de RAM. Esta sola frase ocupa más memoria que toda la consola.',
       svgColor: '#00e5a0',
-      svg: `<svg viewBox="0 0 140 110" xmlns="http://www.w3.org/2000/svg" width="140" height="110">
-        <!-- Maze walls (simplified Pac-Man style) -->
-        <rect x="2"   y="2"   width="136" height="106" rx="3" fill="#000010" stroke="#00e5a0" stroke-width="1.5"/>
-        <!-- Outer border double line -->
-        <rect x="6"   y="6"   width="128" height="98"  rx="2" fill="none" stroke="#00e5a0" stroke-width="0.5" opacity="0.4"/>
-        <!-- Maze corridors (horizontal walls) -->
-        <rect x="12"  y="22"  width="30"  height="4"   fill="#00e5a0" opacity="0.8"/>
-        <rect x="58"  y="22"  width="24"  height="4"   fill="#00e5a0" opacity="0.8"/>
-        <rect x="98"  y="22"  width="30"  height="4"   fill="#00e5a0" opacity="0.8"/>
-        <rect x="12"  y="50"  width="18"  height="4"   fill="#00e5a0" opacity="0.8"/>
-        <rect x="50"  y="50"  width="40"  height="4"   fill="#00e5a0" opacity="0.8"/>
-        <rect x="110" y="50"  width="18"  height="4"   fill="#00e5a0" opacity="0.8"/>
-        <rect x="12"  y="78"  width="30"  height="4"   fill="#00e5a0" opacity="0.8"/>
-        <rect x="58"  y="78"  width="24"  height="4"   fill="#00e5a0" opacity="0.8"/>
-        <rect x="98"  y="78"  width="30"  height="4"   fill="#00e5a0" opacity="0.8"/>
-        <!-- Vertical walls -->
-        <rect x="42"  y="6"   width="4"   height="16"  fill="#00e5a0" opacity="0.8"/>
-        <rect x="94"  y="6"   width="4"   height="16"  fill="#00e5a0" opacity="0.8"/>
-        <rect x="42"  y="26"  width="4"   height="24"  fill="#00e5a0" opacity="0.8"/>
-        <rect x="94"  y="26"  width="4"   height="24"  fill="#00e5a0" opacity="0.8"/>
-        <rect x="42"  y="54"  width="4"   height="24"  fill="#00e5a0" opacity="0.8"/>
-        <rect x="94"  y="54"  width="4"   height="24"  fill="#00e5a0" opacity="0.8"/>
-        <!-- Dots (pellets) -->
-        <circle cx="26"  cy="36" r="2" fill="#ffd166" opacity="0.9"/>
-        <circle cx="70"  cy="36" r="2" fill="#ffd166" opacity="0.9"/>
-        <circle cx="114" cy="36" r="2" fill="#ffd166" opacity="0.9"/>
-        <circle cx="26"  cy="64" r="2" fill="#ffd166" opacity="0.9"/>
-        <circle cx="114" cy="64" r="2" fill="#ffd166" opacity="0.9"/>
-        <!-- Power pellets (big) -->
-        <circle cx="16"  cy="14" r="4" fill="#ffd166" opacity="0.95"><animate attributeName="opacity" values="0.95;0.2;0.95" dur="0.8s" repeatCount="indefinite"/></circle>
-        <circle cx="124" cy="14" r="4" fill="#ffd166" opacity="0.95"><animate attributeName="opacity" values="0.95;0.2;0.95" dur="0.8s" begin="0.4s" repeatCount="indefinite"/></circle>
-        <!-- PAC-MAN (moving right, mouth open) -->
-        <g style="animation: shipFloat 1.8s ease-in-out infinite;">
-          <path d="M55,62 L70,55 A14,14 0 1,1 70,69 Z" fill="#ffd166"/>
+      svg: `<svg viewBox="0 0 140 130" xmlns="http://www.w3.org/2000/svg" width="140" height="130">
+        <defs>
+          <!-- Clip al corredor superior (donde viaja Pac-Man) -->
+          <clipPath id="corridorTop">
+            <rect x="6" y="35" width="128" height="18"/>
+          </clipPath>
+          <!-- Clip al corredor del medio -->
+          <clipPath id="corridorMid">
+            <rect x="6" y="60" width="128" height="18"/>
+          </clipPath>
+        </defs>
+
+        <!-- Fondo del laberinto -->
+        <rect x="0" y="0" width="140" height="130" fill="#000010"/>
+
+        <!-- Score bar -->
+        <rect x="0" y="0" width="140" height="14" fill="#000020"/>
+        <text x="10" y="10" font-family="'Press Start 2P',monospace" font-size="5" fill="#ffd166">1UP</text>
+        <text x="44" y="10" font-family="'Press Start 2P',monospace" font-size="5" fill="white">10080</text>
+        <text x="92" y="10" font-family="'Press Start 2P',monospace" font-size="5" fill="#ffd166">HIGH</text>
+
+        <!-- ══ LABERINTO ══ -->
+        <!-- Borde exterior -->
+        <rect x="4" y="15" width="132" height="100" rx="3" fill="none" stroke="#00e5a0" stroke-width="2"/>
+
+        <!-- Muros horizontales superiores (dentro del laberinto) -->
+        <rect x="4"  y="15" width="40" height="4" fill="#00e5a0"/>
+        <rect x="54" y="15" width="32" height="4" fill="#00e5a0"/>
+        <rect x="96" y="15" width="40" height="4" fill="#00e5a0"/>
+
+        <!-- Muros verticales que forman las celdas -->
+        <rect x="44" y="15" width="4" height="24" fill="#00e5a0"/>
+        <rect x="92" y="15" width="4" height="24" fill="#00e5a0"/>
+
+        <!-- Bloque central arriba -->
+        <rect x="54" y="27" width="32" height="12" rx="1" fill="#00e5a0"/>
+
+        <!-- Muros corredor medio -->
+        <rect x="4"  y="53" width="30" height="4" fill="#00e5a0"/>
+        <rect x="106" y="53" width="30" height="4" fill="#00e5a0"/>
+        <rect x="44" y="53" width="52" height="4" fill="#00e5a0"/>
+
+        <!-- Muros corredor bajo -->
+        <rect x="4"  y="78" width="40" height="4" fill="#00e5a0"/>
+        <rect x="54" y="78" width="32" height="4" fill="#00e5a0"/>
+        <rect x="96" y="78" width="40" height="4" fill="#00e5a0"/>
+        <rect x="44" y="57" width="4" height="25" fill="#00e5a0"/>
+        <rect x="92" y="57" width="4" height="25" fill="#00e5a0"/>
+
+        <!-- Ghost house (jaula central) -->
+        <rect x="52" y="56" width="36" height="22" rx="1" fill="none" stroke="#ff9fd1" stroke-width="1" opacity="0.5"/>
+
+        <!-- ══ PELLETS en corredor superior (entre muros x=8..43 y x=48..91 y x=96..132) ══ -->
+        <circle cx="14"  cy="44" r="1.5" fill="#ffd166"/>
+        <circle cx="22"  cy="44" r="1.5" fill="#ffd166"/>
+        <circle cx="30"  cy="44" r="1.5" fill="#ffd166"/>
+        <circle cx="38"  cy="44" r="1.5" fill="#ffd166"/>
+        <circle cx="55"  cy="44" r="1.5" fill="#ffd166"/>
+        <circle cx="63"  cy="44" r="1.5" fill="#ffd166"/>
+        <circle cx="71"  cy="44" r="1.5" fill="#ffd166"/>
+        <circle cx="79"  cy="44" r="1.5" fill="#ffd166"/>
+        <circle cx="97"  cy="44" r="1.5" fill="#ffd166"/>
+        <circle cx="105" cy="44" r="1.5" fill="#ffd166"/>
+        <circle cx="113" cy="44" r="1.5" fill="#ffd166"/>
+        <circle cx="121" cy="44" r="1.5" fill="#ffd166"/>
+
+        <!-- Pellets corredor bajo -->
+        <circle cx="14"  cy="90" r="1.5" fill="#ffd166"/>
+        <circle cx="30"  cy="90" r="1.5" fill="#ffd166"/>
+        <circle cx="63"  cy="90" r="1.5" fill="#ffd166"/>
+        <circle cx="79"  cy="90" r="1.5" fill="#ffd166"/>
+        <circle cx="113" cy="90" r="1.5" fill="#ffd166"/>
+        <circle cx="121" cy="90" r="1.5" fill="#ffd166"/>
+
+        <!-- Power pellets (parpadean, en esquinas dentro del laberinto) -->
+        <circle cx="11" cy="22" r="4" fill="#ffd166"><animate attributeName="opacity" values="1;0.1;1" dur="0.7s" repeatCount="indefinite"/></circle>
+        <circle cx="129" cy="22" r="4" fill="#ffd166"><animate attributeName="opacity" values="1;0.1;1" dur="0.7s" begin="0.35s" repeatCount="indefinite"/></circle>
+        <circle cx="11" cy="109" r="4" fill="#ffd166"><animate attributeName="opacity" values="1;0.1;1" dur="0.7s" begin="0.2s" repeatCount="indefinite"/></circle>
+        <circle cx="129" cy="109" r="4" fill="#ffd166"><animate attributeName="opacity" values="1;0.1;1" dur="0.7s" begin="0.55s" repeatCount="indefinite"/></circle>
+
+        <!-- ══ PAC-MAN en corredor superior (y=44), viaja de x=8 a x=38, clippeado ══ -->
+        <g clip-path="url(#corridorTop)">
+          <!-- Pac-Man: empieza en x=8 centro, se mueve hasta x=38 -->
+          <g>
+            <animateTransform attributeName="transform" type="translate"
+              values="0,0; 28,0; 28,0; 0,0"
+              keyTimes="0;0.42;0.58;1"
+              dur="2.8s" repeatCount="indefinite"/>
+            <path fill="#ffd166">
+              <!-- boca abriéndose y cerrándose, centrado en (16,44) -->
+              <animate attributeName="d"
+                values="M16,44 L23,39 A8,8 0 1,1 23,49 Z;
+                        M16,44 L24,44 A8,8 0 1,1 24,44 Z;
+                        M16,44 L23,39 A8,8 0 1,1 23,49 Z"
+                dur="0.35s" repeatCount="indefinite"/>
+            </path>
+          </g>
+
+          <!-- Fantasma Blinky (rojo) — persigue a Pac-Man, 12px detrás -->
+          <g>
+            <animateTransform attributeName="transform" type="translate"
+              values="-14,0; 14,0; 14,0; -14,0"
+              keyTimes="0;0.42;0.58;1"
+              dur="2.8s" repeatCount="indefinite"/>
+            <!-- cuerpo redondeado arriba -->
+            <rect x="10" y="37" width="12" height="9" rx="6" fill="#ff4d6d"/>
+            <!-- cuerpo base -->
+            <rect x="10" y="43" width="12" height="5" fill="#ff4d6d"/>
+            <!-- flecos de abajo (3 dientes) -->
+            <rect x="10" y="48" width="3" height="3" fill="#ff4d6d"/>
+            <rect x="14" y="48" width="3" height="3" fill="#ff4d6d"/>
+            <rect x="18" y="48" width="3" height="3" fill="#ff4d6d"/>
+            <!-- ojos -->
+            <circle cx="14" cy="42" r="2" fill="white"/>
+            <circle cx="19" cy="42" r="2" fill="white"/>
+            <circle cx="15" cy="42" r="1" fill="#000080"/>
+            <circle cx="20" cy="42" r="1" fill="#000080"/>
+          </g>
+
+          <!-- Fantasma Pinky (rosa) — 26px detrás de Pac-Man -->
+          <g>
+            <animateTransform attributeName="transform" type="translate"
+              values="-28,0; 0,0; 0,0; -28,0"
+              keyTimes="0;0.42;0.58;1"
+              dur="2.8s" repeatCount="indefinite"/>
+            <rect x="10" y="37" width="12" height="9" rx="6" fill="#ff9fd1"/>
+            <rect x="10" y="43" width="12" height="5" fill="#ff9fd1"/>
+            <rect x="10" y="48" width="3" height="3" fill="#ff9fd1"/>
+            <rect x="14" y="48" width="3" height="3" fill="#ff9fd1"/>
+            <rect x="18" y="48" width="3" height="3" fill="#ff9fd1"/>
+            <circle cx="14" cy="42" r="2" fill="white"/>
+            <circle cx="19" cy="42" r="2" fill="white"/>
+            <circle cx="15" cy="42" r="1" fill="#000080"/>
+            <circle cx="20" cy="42" r="1" fill="#000080"/>
+          </g>
         </g>
-        <!-- GHOST 1 (Blinky - red) -->
-        <g style="animation: shipFloat 2.2s ease-in-out infinite 0.3s;">
-          <rect x="88" y="55" width="16" height="12" rx="4" fill="#ff4d6d"/>
-          <rect x="88" y="63" width="4"  height="5"  rx="0" fill="#ff4d6d"/>
-          <rect x="96" y="63" width="4"  height="5"  rx="0" fill="#ff4d6d"/>
-          <circle cx="92" cy="60" r="2.5" fill="white"/>
-          <circle cx="100" cy="60" r="2.5" fill="white"/>
-          <circle cx="93" cy="61" r="1.2" fill="#000088"/>
-          <circle cx="101" cy="61" r="1.2" fill="#000088"/>
-        </g>
-        <!-- GHOST 2 (Pinky - pink) -->
-        <g style="animation: shipFloat 2s ease-in-out infinite 0.7s;">
-          <rect x="108" y="55" width="16" height="12" rx="4" fill="#ff9fd1"/>
-          <rect x="108" y="63" width="4"  height="5"  rx="0" fill="#ff9fd1"/>
-          <rect x="116" y="63" width="4"  height="5"  rx="0" fill="#ff9fd1"/>
-          <circle cx="112" cy="60" r="2.5" fill="white"/>
-          <circle cx="120" cy="60" r="2.5" fill="white"/>
-          <circle cx="113" cy="61" r="1.2" fill="#000088"/>
-          <circle cx="121" cy="61" r="1.2" fill="#000088"/>
-        </g>
-        <!-- Score top -->
-        <text x="70" y="104" text-anchor="middle" font-family="'Press Start 2P',monospace" font-size="5" fill="#ffd166" opacity="0.8">1UP · · · · HI-SCORE · · · · 2UP</text>
+
+        <!-- Fantasma Inky (celeste) en la ghost house, quieto -->
+        <rect x="60" y="61" width="12" height="9" rx="6" fill="#4dcfff"/>
+        <rect x="60" y="67" width="12" height="5" fill="#4dcfff"/>
+        <rect x="60" y="72" width="3" height="3" fill="#4dcfff"/>
+        <rect x="64" y="72" width="3" height="3" fill="#4dcfff"/>
+        <rect x="68" y="72" width="3" height="3" fill="#4dcfff"/>
+        <circle cx="64" cy="66" r="2" fill="white"/>
+        <circle cx="69" cy="66" r="2" fill="white"/>
+        <circle cx="65" cy="66" r="1" fill="#000080"/>
+        <circle cx="70" cy="66" r="1" fill="#000080"/>
+
+        <!-- Fantasma Clyde (naranja) en la ghost house -->
+        <rect x="74" y="61" width="12" height="9" rx="6" fill="#ffa040"/>
+        <rect x="74" y="67" width="12" height="5" fill="#ffa040"/>
+        <rect x="74" y="72" width="3" height="3" fill="#ffa040"/>
+        <rect x="78" y="72" width="3" height="3" fill="#ffa040"/>
+        <rect x="82" y="72" width="3" height="3" fill="#ffa040"/>
+        <circle cx="78" cy="66" r="2" fill="white"/>
+        <circle cx="83" cy="66" r="2" fill="white"/>
+        <circle cx="79" cy="66" r="1" fill="#000080"/>
+        <circle cx="84" cy="66" r="1" fill="#000080"/>
+
+        <!-- Bottom bar -->
+        <rect x="0" y="115" width="140" height="15" fill="#000020"/>
+        <text x="70" y="125" text-anchor="middle" font-family="'Press Start 2P',monospace" font-size="5" fill="#ffd166">PAC-MAN  1980</text>
       </svg>`
     },
 
